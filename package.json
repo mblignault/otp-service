@@ -1,0 +1,17 @@
+{
+  "name": "my-test",
+  "version": "1.0.0",
+  "description": "Welcome to your test! The instructions for the test should have been sent via email, this is just the place for you to write your code and ensure it's all working correctly.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^8.0.1",
+    "nodemailer": "^6.9.7"
+  }
+}
