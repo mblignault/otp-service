@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const DB_URI = 'mongodb://my_test:my_test@127.0.0.1:2707/my_test?authSource=admin'
+const DB_URI = 'mongodb://my_test:my_test@127.0.0.1:27017/my_test?authSource=admin'
 
 mongoose.connect(DB_URI, {
     // useNewUrlParser: true,
