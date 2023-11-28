@@ -1,11 +1,10 @@
 const express = require("express");
-
-require("./app/config/db.config.js");
-
 const app = express();
 
-app.use(express.json());
+require("./app/config/db.config.js");
+require("./app/routes/otp.routes.js")(app);
 
+app.use(express.json());
 app.get("/", (req, res) => {
     res.send("OTP Service Active");
 });
