@@ -95,13 +95,14 @@ exports.validate = async (req, res) => {
     }
 
     // Only latest OTP Valid
-    const latestOtp = OTP.findOne({ email: email }).sort({ updatedAt: -1 });
+    const latestOtp = await OTP.findOne({ email: email }).sort({ updatedAt: -1 });
 
     if (!latestOtp) {
         return res.status(404).send({ success: false, message: "OTP not found." });
     }
 
     // Validate OTP
+    console.log(latestOtp);
     if (latestOtp.otp === otp) {
         // OTP expires after x seconds
         if (dayjs().isAfter(dayjs(latestOtp.updatedAt).add(OTP_EXPIRY_SEC, "seconds"))) {
