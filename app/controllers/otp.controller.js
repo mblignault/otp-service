@@ -1,5 +1,6 @@
 const dayjs = require("dayjs");
 const randomize = require("randomatic");
+const transporter = require("../config/mailer.config");
 const db = require("../models");
 const OTP = db.otp;
 
@@ -50,7 +51,16 @@ exports.create = async (req, res) => {
             latest.updatedAt = dayjs().valueOf();
             latest.resendCount += 1;
             await latest.save();
-            return res.send({ success: true, otp: latest.otp });
+
+            const mailOptions = buildMailOptions(email, "Resending Your OTP", `Your OTP has not changed, it is: ${latest.otp}.`);
+            return transporter.sendMail(mailOptions, (err, info) => {
+                if (err) {
+                    console.log("Mail error: ", err);
+                    return res.status(500).send({ success: false, message: "Error sending OTP." });
+                } else {
+                    return res.send({ success: true, message: "Your OTP has been sent to your email address." });
+                }
+            });
         }
 
         // Cannot generate more than x OTPs per hour
@@ -75,13 +85,30 @@ exports.create = async (req, res) => {
         }
 
         // If everything is within rage, generate new OTP
-        const newOtp = generateOTP(email);
+        const newOtp = await generateOTP(email);
         await newOtp.save();
-        return res.send({ success: true, otp: newOtp.otp });
+
+        const mailOptions = buildMailOptions(email, "Your OTP", `Your OTP is: ${newOtp.otp}.`);
+        return transporter.sendMail(mailOptions, (err, info) => {
+            if (err) {
+                console.log("Mail error: ", err);
+                return res.status(500).send({ success: false, message: "Error sending OTP." });
+            } else {
+                return res.send({ success: true, message: "Your OTP has been sent to your email address." });
+            }
+        });
     } else {
-        const newOtp = generateOTP(email);
+        const newOtp = await generateOTP(email);
         await newOtp.save();
-        return res.send({ success: true, otp: newOtp.otp });
+        const mailOptions = buildMailOptions(email, "Your OTP", `Your OTP is: ${newOtp.otp}.`);
+        return transporter.sendMail(mailOptions, (err, info) => {
+            if (err) {
+                console.log("Mail error: ", err);
+                return res.status(500).send({ success: false, message: "Error sending OTP." });
+            } else {
+                return res.send({ success: true, message: "Your OTP has been sent to your email address." });
+            }
+        });
     }
 };
 
@@ -122,10 +149,21 @@ exports.validate = async (req, res) => {
     }
 };
 
-function generateOTP(email) {
-    const otpNumber = randomize("0", 6);
+async function generateOTP(email) {
     // OTP cannot be used more than once
-    // TODO: check if number exists
+    // check if number exists
+    let otpNumber = randomize("0", 6);
+    let uniqueNumber = false;
+    const index = 0;
+    while (!uniqueNumber || index > 200) {
+        const existingNumber = await OTP.findOne({ otp: otpNumber });
+        if (existingNumber) {
+            otpNumber = randomize("0", 6);
+        } else {
+            console.log("Unique number found! Index: ", index);
+            uniqueNumber = true;
+        }
+    }
 
     // Create new OTP for the DB
     const newOtp = new OTP({
@@ -137,3 +175,12 @@ function generateOTP(email) {
 
     return newOtp;
 }
+
+const buildMailOptions = (email, subject, text) => {
+    return {
+        from: "no-reply@entrostat.xyz",
+        to: email,
+        subject: subject,
+        text: text,
+    };
+};
