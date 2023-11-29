@@ -5,8 +5,8 @@ module.exports = (mongoose) => {
         mongoose.Schema({
             otp: { type: String, required: true },
             email: { type: String, required: true },
-            createdAt: { type: Date, default: dayjs() },
-            updatedAt: { type: Date, default: dayjs() },
+            createdAt: { type: Number, default: () => dayjs().valueOf() },
+            updatedAt: { type: Number, default: () => dayjs().valueOf() },
             verified: { type: Boolean, default: false },
             resendCount: { type: Number, default: 0 },
         })
