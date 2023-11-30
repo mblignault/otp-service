@@ -12,7 +12,6 @@ const OTP_RESEND_LIMIT = 3;
 // Generate OTP
 exports.create = async (req, res) => {
     const { email } = req.query;
-
     // Check for email
     if (!email) {
         res.status(400).send({ success: false, message: "Email cannot be empty." });

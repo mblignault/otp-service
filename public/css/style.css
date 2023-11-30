@@ -1,5 +1,5 @@
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
     height: 100vh;
     width: 100vw;
 }
@@ -44,8 +44,8 @@ form {
 }
 
 button {
-   width: max-content;
-   padding: 8px;
+    width: max-content;
+    padding: 8px;
     border-radius: 999px;
     background-color: transparent;
     border: 1px solid grey;
@@ -57,7 +57,6 @@ button:hover {
     background-color: transparent;
     background-color: rgba(137, 43, 226, 0.092);
     transition: all 0.3s;
-    
 }
 
 input {
