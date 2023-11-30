@@ -5,6 +5,10 @@ require("./app/config/db.config.js");
 require("./app/routes/otp.routes.js")(app);
 
 app.use(express.json());
+
+// Serve static files
+app.use(express.static("public"));
+
 app.get("/", (req, res) => {
     res.send("OTP Service Active");
 });

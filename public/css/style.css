@@ -1,0 +1,74 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    height: 100vh;
+    width: 100vw;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.title {
+    font-weight: bold;
+    padding-bottom: 4px;
+}
+
+.panel {
+    border-radius: 8px;
+    border: 1px solid #eee;
+    padding: 1.5rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    width: 300px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.form-control {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+button {
+   width: max-content;
+   padding: 8px;
+    border-radius: 999px;
+    background-color: transparent;
+    border: 1px solid grey;
+    font-size: 12px;
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: transparent;
+    background-color: rgba(137, 43, 226, 0.092);
+    transition: all 0.3s;
+    
+}
+
+input {
+    border-radius: 4px;
+    padding: 8px;
+    border: 1px solid grey;
+}
+
+.panel-footer {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 8px;
+    margin-top: 16px;
+}
