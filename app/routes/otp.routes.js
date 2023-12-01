@@ -5,6 +5,9 @@ module.exports = (app) => {
     // Create OTP endpoint
     router.post("/generate", OTPs.create);
 
+    // Resend OTP endpoint
+    router.post("/resend", OTPs.resend);
+
     // Validate OTP endpoint
     router.put("/validate", OTPs.validate);
 

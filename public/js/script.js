@@ -11,9 +11,10 @@ document.addEventListener("DOMContentLoaded", () => {
             const submitType = e.submitter.value;
             if (submitType === "resend") {
                 console.log("Resend button clicked", email);
+                requestOTP(email, "resend");
             } else {
                 console.log("Submit button clicked", email);
-                requestOTP(email);
+                requestOTP(email, "generate");
             }
         });
     }
@@ -29,12 +30,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-function requestOTP(email) {
+function requestOTP(email, type = "generate") {
     notificationDiv = document.getElementById("generate-notification");
     notificationDiv.textContent = "";
     notificationDiv.classList.remove("error-message");
     notificationDiv.classList.remove("success-message");
-    fetch(`api/otp/generate?email=${email}`, {
+    fetch(`api/otp/${type}?email=${email}`, {
         method: "POST",
         headers: {
             "Content-type": "application/json",
