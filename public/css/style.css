@@ -20,7 +20,7 @@ body {
 
 .panel {
     border-radius: 8px;
-    border: 1px solid #eee;
+    border: 1px solid #ccc;
     padding: 1.5rem;
 
     display: flex;
@@ -45,7 +45,7 @@ form {
 
 button {
     width: max-content;
-    padding: 8px;
+    padding: 8px 16px;
     border-radius: 999px;
     background-color: transparent;
     border: 1px solid grey;
@@ -54,8 +54,9 @@ button {
 
 button:hover {
     cursor: pointer;
-    background-color: transparent;
-    background-color: rgba(137, 43, 226, 0.092);
+    background-color: rgb(14, 53, 75);
+    font-weight: bold;
+    color: white;
     transition: all 0.3s;
 }
 
@@ -70,4 +71,38 @@ input {
     justify-content: space-evenly;
     gap: 8px;
     margin-top: 16px;
+}
+
+.panel-extra {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    font-size: 12px;
+    padding: 8px;
+    cursor: pointer;
+}
+
+#generate-notification,
+#validate-notification {
+    font-size: 12px;
+    text-align: center;
+    word-wrap: normal;
+}
+
+.error-message {
+    color: rgb(124, 17, 17);
+}
+
+.success-message {
+    color: rgb(17, 124, 19);
+}
+
+a {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    gap: 4px;
+
+    text-decoration: none;
+    color: #222;
 }
