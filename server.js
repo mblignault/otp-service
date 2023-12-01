@@ -8,7 +8,7 @@ require("./app/routes/otp.routes.js")(app);
 app.use(express.json());
 
 // Serve static files
-app.use(express.static("public"));
+app.use(express.static("app/public"));
 
 app.get("/", (req, res) => {
     res.send("OTP Service Active");
