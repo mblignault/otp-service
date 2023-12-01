@@ -6,10 +6,6 @@ Welcome to your test! The instructions for the test should have been sent via em
 
 This project implements an OTP Generation and Validation service.
 
-# To Run this Project
-
-"node server.js"
-
 ## Features
 
 -   OTP Generation
@@ -17,6 +13,10 @@ This project implements an OTP Generation and Validation service.
 -   OTP Expiry
 -   OTP Generation Limits
 -   OTP Resend functionality
+
+# To Run this Project
+
+"node server.js"
 
 # Additonal Notes
 
