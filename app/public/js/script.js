@@ -10,10 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const submitType = e.submitter.value;
             if (submitType === "resend") {
-                console.log("Resend button clicked", email);
                 requestOTP(email, "resend");
             } else {
-                console.log("Submit button clicked", email);
                 requestOTP(email, "generate");
             }
         });
@@ -24,7 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
             e.preventDefault();
             const email = document.getElementById("validation-email").value;
             const otp = document.getElementById("validation-otp").value;
-            console.log("Submit button clicked", email, otp);
             validateOTP(email, otp);
         });
     }
@@ -43,7 +40,7 @@ function requestOTP(email, type = "generate") {
     })
         .then((response) => response.json())
         .then((data) => {
-            console.log("Generate Data: ", data);
+            // console.log("Generate Data: ", data);
             if (data.success === false) {
                 notificationDiv.classList.add("error-message");
             } else {
@@ -52,14 +49,10 @@ function requestOTP(email, type = "generate") {
             notificationDiv.textContent = data.message;
         })
         .catch((err) => {
-            console.error("Error: ", err);
+            // console.error("Error: ", err);
             notificationDiv.classList.add("error-message");
             notificationDiv.textContent = "Error generating OTP.";
         });
-}
-
-function resendOTP(email) {
-    console.log("Resending");
 }
 
 function validateOTP(email, otp) {
@@ -75,7 +68,7 @@ function validateOTP(email, otp) {
     })
         .then((response) => response.json())
         .then((data) => {
-            console.log("Validate Data: ", data);
+            // console.log("Validate Data: ", data);
             if (data.success === false) {
                 notificationDiv.classList.add("error-message");
             } else {
@@ -84,7 +77,7 @@ function validateOTP(email, otp) {
             notificationDiv.textContent = data.message;
         })
         .catch((err) => {
-            console.error("Error: ", err);
+            // console.error("Error: ", err);
             notificationDiv.classList.add("error-message");
             notificationDiv.textContent = "Error validating OTP.";
         });

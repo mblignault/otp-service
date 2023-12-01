@@ -25,7 +25,7 @@ exports.create = async (req, res) => {
         email: email,
         createdAt: { $gt: previousOTPsTime },
     }).sort({ updatedAt: -1 });
-    console.log("Existing: ", existingOtps);
+    // console.log("Existing: ", existingOtps);
 
     const numInLastHour = existingOtps?.length || 0;
     const latest = existingOtps[0];
@@ -35,18 +35,10 @@ exports.create = async (req, res) => {
         const openAgain = dayjs(latest.updatedAt).add(1, "hours");
         const currentMoment = dayjs();
         const minsUtilOpen = openAgain.diff(currentMoment, "minutes", true);
-        const hours = Math.floor(minsUtilOpen / 60);
         const minutes = Math.floor(minsUtilOpen % 60);
-        console.log("Open again: ", minsUtilOpen, "Hours: ", hours, "Min: ", minutes);
-        let baseMessage = "OTP send limit reached. Please try again after ";
-        if (hours > 0) {
-            baseMessage += `${hours} hour${hours > 1 ? "s" : ""}`;
-        }
 
-        if (minutes > 0) {
-            if (hours > 0) baseMessage += " and ";
-            baseMessage += `${minutes} minute${minutes > 1 ? "s" : ""}`;
-        }
+        let baseMessage = "OTP send limit reached. Please try again after ";
+        baseMessage += `${minutes} minute${minutes > 1 ? "s" : ""}`;
 
         return res.status(429).send({ success: false, message: baseMessage });
     }
@@ -58,7 +50,6 @@ exports.create = async (req, res) => {
     const mailOptions = buildMailOptions(email, "Your OTP", `Your OTP is: ${newOtp.otp}.`);
     return transporter.sendMail(mailOptions, (err, info) => {
         if (err) {
-            console.log("Mail error: ", err);
             return res.status(500).send({ success: false, message: "Error sending OTP." });
         } else {
             return res.send({ success: true, message: "Your OTP has been sent to your email address." });
@@ -83,8 +74,6 @@ exports.resend = async (req, res) => {
         createdAt: { $gt: previousOTPsTime },
     }).sort({ updatedAt: -1 });
 
-    console.log("Existing: ", existingOtps);
-
     if (existingOtps.length) {
         const latest = existingOtps[0];
 
@@ -101,7 +90,6 @@ exports.resend = async (req, res) => {
             const mailOptions = buildMailOptions(email, "Resending Your OTP", `Your OTP has not changed, it is: ${latest.otp}.`);
             return transporter.sendMail(mailOptions, (err, info) => {
                 if (err) {
-                    console.log("Mail error: ", err);
                     return res.status(500).send({ success: false, message: "Error sending OTP." });
                 } else {
                     return res.send({ success: true, message: "Your OTP has been resent to your email address." });
@@ -113,7 +101,7 @@ exports.resend = async (req, res) => {
             return res.status(429).send({ success: false, message: errorMesage });
         }
     } else {
-        return res.status(429).send({ success: false, message: "OTP is not longer valid. Request a new one." });
+        return res.status(400).send({ success: false, message: "OTP is not longer valid. Request a new one." });
     }
 };
 
