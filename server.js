@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 
+require("dotenv").config();
 require("./app/config/db.config.js");
 require("./app/routes/otp.routes.js")(app);
 

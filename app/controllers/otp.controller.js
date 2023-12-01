@@ -4,10 +4,10 @@ const transporter = require("../config/mailer.config");
 const db = require("../models");
 const OTP = db.otp;
 
-const REQUEST_LIMIT_PER_HOUR = 3;
-const OTP_EXPIRY_SEC = 30;
-const OTP_RESEND_TIMEOUT_MIN = 5;
-const OTP_RESEND_LIMIT = 3;
+const REQUEST_LIMIT_PER_HOUR = process.env.REQUEST_LIMIT_PER_HOUR || 3;
+const OTP_EXPIRY_SEC = process.env.OTP_EXPIRY_SEC || 30;
+const OTP_RESEND_TIMEOUT_MIN = process.env.OTP_RESEND_TIMEOUT_MIN || 5;
+const OTP_RESEND_LIMIT = process.env.OTP_RESEND_LIMIT || 3;
 
 // Generate OTP
 exports.create = async (req, res) => {
