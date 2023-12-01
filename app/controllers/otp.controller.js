@@ -94,7 +94,6 @@ exports.resend = async (req, res) => {
             latest.resendCount < OTP_RESEND_LIMIT
         ) {
             // Update time
-            console.log("Resending");
             latest.updatedAt = dayjs().valueOf();
             latest.resendCount += 1;
             await latest.save();
@@ -137,17 +136,17 @@ exports.validate = async (req, res) => {
 
     // Validate OTP
     if (latestOtp.otp === otp) {
+        // CHeck that it hasnt been used already
+        if (latestOtp.verified) {
+            return res.status(400).send({ success: false, message: "OTP has already been used." });
+        }
+
         // OTP expires after x seconds
         if (dayjs().isAfter(dayjs(latestOtp.updatedAt).add(OTP_EXPIRY_SEC, "seconds"))) {
             return res.status(404).send({ success: false, message: "OTP is not valid anymore." });
         }
 
-        // CHeck that it hasnt been used already
-        if (latestOtp.validated) {
-            return res.status(400).send({ success: false, message: "OTP has already been used." });
-        }
-
-        latestOtp.validated = true;
+        latestOtp.verified = true;
         await latestOtp.save();
         return res.send({ success: true, message: "OTP is valid." });
     } else {
@@ -155,6 +154,7 @@ exports.validate = async (req, res) => {
     }
 };
 
+// ======================================================= UTILITY FUNCTIONS =======================================================
 function validateEmail(email) {
     // Check for email
     if (!email) {
@@ -190,7 +190,6 @@ async function generateOTP(email) {
         if (existingNumber) {
             otpNumber = randomize("0", 6);
         } else {
-            console.log("Unique number found! Index: ", index);
             uniqueNumber = true;
         }
     }
